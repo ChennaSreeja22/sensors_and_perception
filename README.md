@@ -1436,7 +1436,37 @@ Now add `process_image()` (after `display_image`) — this detects the red ball 
 
         return binary*255
 ```
+And update the `display image` func to show those windows:
+```bash
+    def display_image(self):
+        """Main loop to process and display the latest frame."""
+        # Create a single OpenCV window
+        cv2.namedWindow("frame", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("frame", 800,600)
 
+        while rclpy.ok():
+            # Check if there is a new frame available
+            if self.latest_frame is not None:
+
+                # Process the current image
+                mask, contour, crosshair = self.process_image(self.latest_frame)
+
+                # Show the latest frame
+                cv2.imshow("frame", self.latest_frame)
+                cv2.imshow("mask", mask)
+                cv2.imshow("contour", contour)
+                cv2.imshow("crosshair", crosshair)
+                self.latest_frame = None  # Clear the frame after displaying
+
+            # Check for quit key
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                self.running = False
+                break
+
+        # Close OpenCV window after quitting
+        cv2.destroyAllWindows()
+        self.running = False
+```
 This opens 4 OpenCV windows and tries to find the red ball. Spawn a red ball in the simulation using the Gazebo Resource Spawner plugin first:
 
 ![alt text][image21]
