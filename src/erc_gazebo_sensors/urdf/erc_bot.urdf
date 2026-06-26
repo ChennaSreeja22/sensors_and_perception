@@ -44,39 +44,6 @@
 
   </link>
 
-  <joint type="fixed" name="front_caster_wheel_joint">
-    <origin xyz="0.11 0 -0.05" rpy="0 0 0"/>
-    <child link="front_caster_wheel"/>
-    <parent link="base_link"/>
-  </joint>
-
-  <link name='front_caster_wheel'>
-    <inertial>
-      <mass value="2.0"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia
-          ixx="0.002" ixy="0" ixz="0"
-          iyy="0.002" iyz="0"
-          izz="0.002"
-      />
-    </inertial>
-
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/> 
-      <geometry>
-        <sphere radius="0.05"/>
-      </geometry>
-    </collision>
-
-    <visual name='front_caster_wheel_visual'>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <sphere radius="0.05"/>
-      </geometry>
-        <material name="white"/>
-    </visual>
-  </link>
-
   <joint type="continuous" name="rear_left_wheel_joint">
     <origin xyz="-0.08 0.15 0" rpy="0 0 0"/>
     <child link="rear_left_wheel"/>
@@ -113,6 +80,46 @@
     </visual>
   </link>
 
+  <joint type="continuous" name="front_left_wheel_joint">
+  <origin xyz="0.15 0.15 0" rpy="0 0 0"/>
+  <child link="front_left_wheel"/>
+  <parent link="base_link"/>
+  <axis xyz="0 1 0"/>
+  <limit effort="100" velocity="10"/>
+  <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+
+  <link name="front_left_wheel">
+
+  <inertial>
+    <mass value="5.0"/>
+    <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+    <inertia
+      ixx="0.014"
+      ixy="0"
+      ixz="0"
+      iyy="0.014"
+      iyz="0"
+      izz="0.025"/>
+  </inertial>
+
+  <collision>
+    <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+    <geometry>
+      <cylinder radius="0.1" length="0.05"/>
+    </geometry>
+  </collision>
+
+  <visual name="front_left_wheel_visual">
+    <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+    <geometry>
+      <cylinder radius="0.1" length="0.05"/>
+    </geometry>
+    <material name="green"/>
+  </visual>
+
+</link>
+
   <joint type="continuous" name="rear_right_wheel_joint">
     <origin xyz="-0.08 -0.15 0" rpy="0 0 0"/>
     <child link="rear_right_wheel"/>
@@ -147,6 +154,129 @@
       </geometry>
         <material name="green"/>
     </visual>
-  </link>
+    </link>
+
+  <joint type="continuous" name="front_right_wheel_joint">
+  <origin xyz="0.15 -0.15 0" rpy="0 0 0"/>
+  <child link="front_right_wheel"/>
+  <parent link="base_link"/>
+  <axis xyz="0 1 0" rpy="0 0 0"/>
+  <limit effort="100" velocity="10"/>
+  <dynamics damping="1.0" friction="1.0"/>
+</joint>
+
+<link name="front_right_wheel">
+  <inertial>
+    <mass value="5.0"/>
+    <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+    <inertia
+        ixx="0.014" ixy="0" ixz="0"
+        iyy="0.014" iyz="0"
+        izz="0.025"
+    />
+  </inertial>
+
+  <collision>
+    <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+    <geometry>
+      <cylinder radius=".1" length=".05"/>
+    </geometry>
+  </collision>
+
+  <visual name="front_right_wheel_visual">
+    <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+    <geometry>
+      <cylinder radius=".1" length=".05"/>
+    </geometry>
+    <material name="green"/>
+  </visual>
+</link>
+
+<joint type="fixed" name="camera_joint">
+  <origin xyz="0.225 0 0.075" rpy="0 0 0"/>
+  <child link="camera_link"/>
+  <parent link="base_link"/>
+  <axis xyz="0 1 0"/>
+</joint>
+
+<link name="camera_link">
+  <pose>0 0 0 0 0 0</pose>
+
+  <inertial>
+    <mass value="0.1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <inertia
+      ixx="1e-6"
+      ixy="0"
+      ixz="0"
+      iyy="1e-6"
+      iyz="0"
+      izz="1e-6"/>
+  </inertial>
+
+  <collision name="collision">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size=".03 .03 .03"/>
+    </geometry>
+  </collision>
+
+  <visual name="camera_link_visual">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size=".03 .03 .03"/>
+    </geometry>
+  </visual>
+</link>
+
+<joint type="fixed" name="camera_optical_joint">
+  <origin xyz="0 0 0" rpy="-1.5707 0 -1.5707"/>
+  <child link="camera_link_optical"/>
+  <parent link="camera_link"/>
+</joint>
+
+<link name="camera_link_optical">
+</link>
+
+<joint type="fixed" name="scan_joint">
+  <origin xyz="0.0 0 0.15" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="scan_link"/>
+  <axis xyz="0 1 0"/>
+</joint>
+
+<link name="scan_link">
+  <inertial>
+    <mass value="1e-5"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <inertia
+        ixx="1e-6" ixy="0" ixz="0"
+        iyy="1e-6" iyz="0"
+        izz="1e-6"/>
+  </inertial>
+
+  <collision name="collision">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.06 0.06 0.06"/>
+    </geometry>
+  </collision>
+
+  <visual name="scan_link_visual">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.06 0.06 0.06"/>
+    </geometry>
+  </visual>
+</link>
+
+<joint name="imu_joint" type="fixed">
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="imu_link"/>
+</joint>
+
+<link name="imu_link">
+</link>
 
 </robot>
